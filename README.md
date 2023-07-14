@@ -10,7 +10,7 @@
 * {dialog text : kmeans 채번 index}
 
 ### train.json
-* DSI train file (총 sample: 14,879)
+* DSI train file (총 sample: 14,879 -> 원래 train sample + indexing sample)
 * {dialog (knowledge) text : kmeans 채번 index}
 
 ### knowledge_kmeansid.json
