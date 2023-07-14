@@ -64,14 +64,14 @@ class QueryEvalCallback(TrainerCallback):
                         num_beams=5,
                         prefix_allowed_tokens_fn=self.restrict_decode_vocab,
                         num_return_sequences=5,
-                        early_stopping=True, ).reshape(inputs['input_ids'].shape[0], 10, -1)
+                        early_stopping=True, ).reshape(inputs['input_ids'].shape[0], 5, -1)
                 elif self.target_id_type == 1:
                     batch_beams = model.generate(
                         inputs['input_ids'].to(model.device),
                         max_length=20,
                         num_beams=5,
                         num_return_sequences=10,
-                        early_stopping=True, ).reshape(inputs['input_ids'].shape[0], 10, -1)
+                        early_stopping=True, ).reshape(inputs['input_ids'].shape[0], 5, -1)
                 self.logger.log({"batch_beams": batch_beams, "labels": labels})
                 for beams, label in zip(batch_beams, labels):
                     rank_list = self.tokenizer.batch_decode(beams,
