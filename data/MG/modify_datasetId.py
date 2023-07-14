@@ -19,7 +19,7 @@ def create_index():
 
 def create_traintest():
     know2id = json.load(open('knowledge_kmeansid.json', 'r', encoding='utf-8'))
-    datasets = ['mgcrs_train_dataset.json','mgcrs_test_dataset.json']
+    datasets = ['mgcrs_train_dataset.json','mgcrs_test_gold_idx.json']
     for dataset in datasets:
         saveList = list()
         orgData = json.load(open(dataset, 'r', encoding='utf-8'))
