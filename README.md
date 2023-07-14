@@ -37,6 +37,8 @@
 ### kmeans_mg.py
 * Kmeans clustering 으로 id 채번하기 위한 파일
 * Output file: knowledge_kmeansid.json
+* 파일 실행시키기 위해서 kmeans_clustering library 설치 필요
+``` pip install kmeans-pytorch ```
 
 ### modify_datasetId.py
 * create_traintest()
