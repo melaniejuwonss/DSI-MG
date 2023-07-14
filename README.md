@@ -47,3 +47,10 @@
   * allknowledges 중 train 대상이 되는 것만 따로 저장 (최종 indexing.json)
 * mergeDataset()
   * creat_traintest() 의 결과물 중 'train' 만 'indexing.json' 과 merge 작업 수행   
+
+## 2. Train DSI-MG
+### Command
+``` python train.py --learning_rate=5e-4 --name=MG-t5Large-le5e4 --prefix=True  --num_train_epochs=10 --num_index_epochs=5 --train_type=1 ```
+### Result
+* T5 가 예측한 id, label, input 저장 (results > MMYY_RecPred)
+* Hit@K score 저장 (results > MMYY_raw)
