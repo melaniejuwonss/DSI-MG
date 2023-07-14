@@ -104,7 +104,8 @@ class QueryEvalCallback(TrainerCallback):
                          "Hits@5": hit_at_5 / len(self.test_dataset), "epoch": self.epoch})
         with open(self.results_file_path, 'a', encoding='utf-8') as result_f:
             result_f.write('[FINE TUNING] Epoch:\t%d\t%.4f\t%.4f\t%.4f\n' % (
-                self.epoch, 100 * hit_at_1, 100 * hit_at_3, 100 * hit_at_5,))
+                self.epoch, 100 * (hit_at_1 / len(self.test_dataset)), 100 * (hit_at_3 / len(self.test_dataset)),
+                100 * (hit_at_5 / len(self.test_dataset)),))
         print({"Hits@1": hit_at_1 / len(self.test_dataset), "Hits@3": hit_at_3 / len(self.test_dataset),
                "Hits@5": hit_at_5 / len(self.test_dataset), "epoch": self.epoch})
         batch_index += 1
@@ -204,7 +205,7 @@ def main(args):
         mode='train'
     )
     print("=================================")
-    print("LEN TRAIN DATASET: ", len(train_dataset)) # 14879 = 11621 + 3258
+    print("LEN TRAIN DATASET: ", len(train_dataset))  # 14879 = 11621 + 3258
     print("=================================\n")
     # This eval set is really not the 'eval' set but used to report if the model can memorise (index) all training data points.
     # eval_dataset = RecommendTrainDataset(path_to_data=f'data/Redial/other/valid_{args.dataset}.json',
@@ -224,7 +225,7 @@ def main(args):
                                          mode='test'
                                          )
     print("=================================")
-    print("LEN TEST DATASET: ", len(test_dataset)) # 3711
+    print("LEN TEST DATASET: ", len(test_dataset))  # 3711
     print("=================================\n")
     ################################################################
     # docid generation constrain, we only generate integer docids. --> 근데 _ 로 시작하는건 왜 넣는거지?
