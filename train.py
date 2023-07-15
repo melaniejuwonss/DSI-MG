@@ -254,7 +254,7 @@ def main(args):
         per_device_train_batch_size=args.train_batch_size,
         per_device_eval_batch_size=args.eval_batch_size,
         evaluation_strategy=args.evaluation_strategy,
-        # eval_steps=1000,
+        eval_steps=len(train_dataset) / 60,
         dataloader_drop_last=False,  # necessary
         report_to='wandb',
         logging_steps=50,
