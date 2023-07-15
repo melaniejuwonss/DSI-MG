@@ -249,12 +249,12 @@ def main(args):
     training_args = TrainingArguments(
         output_dir="./results",
         learning_rate=args.learning_rate,  # 0.0005,
-        # warmup_steps=10000,
+        warmup_steps=len(train_dataset)/60,
         # weight_decay=0.01,
         per_device_train_batch_size=args.train_batch_size,
         per_device_eval_batch_size=args.eval_batch_size,
         evaluation_strategy=args.evaluation_strategy,
-        eval_steps=len(train_dataset) / 60,
+        eval_steps=1000,
         dataloader_drop_last=False,  # necessary
         report_to='wandb',
         logging_steps=50,
