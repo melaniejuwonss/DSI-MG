@@ -52,7 +52,7 @@
 
 ## 2. Train DSI-MG
 ### Command
-``` python train.py --learning_rate=5e-4 --name=MG-t5Large-le5e4 --prefix=True  --num_train_epochs=10 --num_index_epochs=5 --train_type=1 ```
+``` python train.py --learning_rate=5e-4 --name=MG-t5Large-le5e4-noPre-dialogLen250-warmup --prefix=True  --num_train_epochs=15 --train_type=0 --max_dialog_len=250 --device=1; ```
 ### Result
 * T5 가 예측한 id, label, input 저장 (results > MMYY_RecPred)
 * Hit@K score 저장 (results > MMYY_raw)
