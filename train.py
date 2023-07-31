@@ -130,8 +130,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     # common
     parser.add_argument('--name', type=str, default="loggertest")
-    parser.add_argument('--model_name', type=str, default='KETI-AIR/ke-t5-base',
-                        choices=['t5-base', 't5-large', 'KETI-AIR/ke-t5-base'])
+    parser.add_argument('--model_name', type=str, default='KETI-AIR/ke-t5-large',
+                        choices=['t5-base', 't5-large', 'KETI-AIR/ke-t5-large'])
     parser.add_argument('--max_dialog_len', type=int, default=128)
     parser.add_argument('--num_index_epochs', type=int, default=5)
     parser.add_argument('--num_train_epochs', type=int, default=20)
