@@ -39,10 +39,10 @@ class QueryEvalCallback(TrainerCallback):
         )
         self.results_file_path = results_file_path
         self.rec_pred_file_path = rec_pred_file_path
-        self.know2id = json.load(open('data/MG/knowledge_kmeansid.json', 'r', encoding='utf-8'))
+        self.know2id = json.load(open('data/KO/knowledge_kmeansid.json', 'r', encoding='utf-8'))
         self.id2know = {v: k for k, v in self.know2id.items()}
         # self.movie2name = json.load(open('data/Redial/movie2name.json', 'r', encoding='utf-8'))
-        self.all_knowledge = json.load(open('data/MG/mgcrs_allknowledges.json', 'r', encoding='utf-8'))
+        self.all_knowledge = json.load(open('data/KO/mgcrs_allknowledges.json', 'r', encoding='utf-8'))
         self.orgIdx2allKnow = {v: k for k, v in self.all_knowledge.items()}
 
     def on_epoch_end(self, args, state, control, **kwargs):
@@ -130,7 +130,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     # common
     parser.add_argument('--name', type=str, default="loggertest")
-    parser.add_argument('--model_name', type=str, default='t5-large', choices=['t5-base', 't5-large'])
+    parser.add_argument('--model_name', type=str, default='KETI-AIR/ke-t5-base',
+                        choices=['t5-base', 't5-large', 'KETI-AIR/ke-t5-base'])
     parser.add_argument('--max_dialog_len', type=int, default=128)
     parser.add_argument('--num_index_epochs', type=int, default=5)
     parser.add_argument('--num_train_epochs', type=int, default=20)
@@ -184,7 +185,7 @@ def main(args):
 
     # We use wandb to log Hits scores after each epoch. Note, this script does not save model checkpoints.
     wandb.login()
-    wandb.init(project="DSI-MG", name=args.name)
+    wandb.init(project="DSI-MG-KO", name=args.name)
     os.environ["CUDA_VISIBLE_DEVICES"] = str(args.device_id)
 
     result_file_path, rec_pred_file_path = createResultFile(args)
@@ -195,7 +196,7 @@ def main(args):
     if int(args.num_reviews) > 0:
         path_to_train_dataset = f'data/Redial/other/train_{args.dataset}_review_{args.num_reviews}.json'
     else:
-        path_to_train_dataset = f'data/MG/train.json'
+        path_to_train_dataset = f'data/KO/train.json'
     train_dataset = RecommendTrainDataset(
         path_to_data=path_to_train_dataset,
         max_length=args.max_dialog_len,
@@ -205,7 +206,7 @@ def main(args):
         mode='train'
     )
     print("=================================")
-    print("LEN TRAIN DATASET: ", len(train_dataset))  # 14879 = 11621 + 3258
+    print("LEN TRAIN DATASET: ", len(train_dataset))  # 14879 = 11621 + 3258, 5129 = 1929 + 3200
     print("=================================\n")
     # This eval set is really not the 'eval' set but used to report if the model can memorise (index) all training data points.
     # eval_dataset = RecommendTrainDataset(path_to_data=f'data/Redial/other/valid_{args.dataset}.json',
@@ -217,7 +218,7 @@ def main(args):
     #                                      )
 
     # This is the actual eval set.
-    test_dataset = RecommendTrainDataset(path_to_data=f'data/MG/test.json',
+    test_dataset = RecommendTrainDataset(path_to_data=f'data/KO/test.json',
                                          max_length=args.max_dialog_len,
                                          cache_dir='cache',
                                          tokenizer=tokenizer,
@@ -225,7 +226,7 @@ def main(args):
                                          mode='test'
                                          )
     print("=================================")
-    print("LEN TEST DATASET: ", len(test_dataset))  # 3711
+    print("LEN TEST DATASET: ", len(test_dataset))  # 3711, 869
     print("=================================\n")
     ################################################################
     # docid generation constrain, we only generate integer docids. --> 근데 _ 로 시작하는건 왜 넣는거지?
@@ -249,7 +250,7 @@ def main(args):
     training_args = TrainingArguments(
         output_dir="./results",
         learning_rate=args.learning_rate,  # 0.0005,
-        warmup_steps=len(train_dataset)/60,
+        warmup_steps=len(train_dataset) / 60,
         # weight_decay=0.01,
         per_device_train_batch_size=args.train_batch_size,
         per_device_eval_batch_size=args.eval_batch_size,
@@ -269,7 +270,7 @@ def main(args):
         model = T5ForConditionalGeneration.from_pretrained(args.model_name, cache_dir='cache')
         if args.train_type == 1:  # and int(args.num_reviews) != 0:
             index_dataset = IndexingTrainDataset(
-                path_to_data=f'data/MG/indexing.json',
+                path_to_data=f'data/KO/indexing.json',
                 max_length=args.max_dialog_len,
                 cache_dir='cache',
                 tokenizer=tokenizer,
@@ -296,7 +297,7 @@ def main(args):
             )
             print("=============Train indexing=============")
             index_trainer.train()
-            index_trainer.save_model(f'model/MG_indexing')
+            index_trainer.save_model(f'model/KO_indexing')
     else:
         model = T5ForConditionalGeneration.from_pretrained(args.saved_model_path)
     model.resize_token_embeddings(len(tokenizer))

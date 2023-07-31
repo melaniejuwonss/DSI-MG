@@ -49,7 +49,7 @@ class IndexingTrainDataset(Dataset):
         self.tokenizer.padding_side = "left"
         if self.usePrefix:
             # whole_text = whole_text.replace("Review: ", "")
-            prefix = self.tokenizer("Knowledge: ", return_tensors="pt", add_special_tokens=False).input_ids
+            prefix = self.tokenizer("지식: ", return_tensors="pt", add_special_tokens=False).input_ids
             prefix_length = prefix.size()[1]
             input_ids = self.tokenizer(whole_text,
                                        return_tensors="pt",
@@ -108,8 +108,8 @@ class RecommendTrainDataset(Dataset):
         #                            padding="longest").input_ids[0]
         self.tokenizer.padding_side = "left"
         if self.usePrefix:
-            if whole_text.startswith("User:") or whole_text.startswith("System:"):
-                prefix = self.tokenizer("Dialog: ", return_tensors="pt", add_special_tokens=False).input_ids
+            if whole_text.startswith("user:") or whole_text.startswith("system:"):
+                prefix = self.tokenizer("대화: ", return_tensors="pt", add_special_tokens=False).input_ids
                 prefix_length = prefix.size()[1]
                 input_ids = self.tokenizer(whole_text,
                                            return_tensors="pt",
@@ -120,7 +120,7 @@ class RecommendTrainDataset(Dataset):
                 input_ids = torch.cat([prefix, input_ids], dim=1)[0]
             else:
                 # whole_text = whole_text.replace("Review: ", "")
-                prefix = self.tokenizer("Knowledge: ", return_tensors="pt", add_special_tokens=False).input_ids
+                prefix = self.tokenizer("지식: ", return_tensors="pt", add_special_tokens=False).input_ids
                 prefix_length = prefix.size()[1]
                 input_ids = self.tokenizer(whole_text,
                                            return_tensors="pt",
