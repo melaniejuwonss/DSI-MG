@@ -125,7 +125,7 @@ class ReviewEmbedding(nn.Module):
 
 
 if __name__ == '__main__':
-    tokenizer = KoBERTTokenizer.from_pretrained('skt/kobert-bse-v1')
+    tokenizer = KoBERTTokenizer.from_pretrained('skt/kobert-base-v1')
     bert_config = BertConfig.from_pretrained('skt/kobert-base-v1')
     bert_model = BertModel.from_pretrained('skt/kobert-base-v1')
     bert_model = bert_model.to(0)
