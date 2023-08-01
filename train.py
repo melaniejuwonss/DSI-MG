@@ -99,7 +99,7 @@ class QueryEvalCallback(TrainerCallback):
                                 'Pred: ': [self.orgIdx2allKnow[int(self.id2know[str(pred)])] if str(
                                     pred) in self.id2know.keys() else str(pred) for pred in batch_rank_list[i]],
                                 'Label: ': self.orgIdx2allKnow[int(self.id2know[str(labels[i])])]
-                            }) + '\n')
+                            }, ensure_ascii=False) + '\n')
         self.logger.log({"Hits@1": hit_at_1 / len(self.test_dataset), "Hits@3": hit_at_3 / len(self.test_dataset),
                          "Hits@5": hit_at_5 / len(self.test_dataset), "epoch": self.epoch})
         with open(self.results_file_path, 'a', encoding='utf-8') as result_f:
